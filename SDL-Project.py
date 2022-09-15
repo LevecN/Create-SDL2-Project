@@ -1,7 +1,7 @@
 from requests import get
 from zipfile import ZipFile
 from sys import argv
-from os import remove, mkdir, path, system
+from os import remove, mkdir, path, system, listdir
 from shutil import move, rmtree
 
 
@@ -103,7 +103,11 @@ int main(int argc, char **argv) {
 
 
 def compileProject():
-    system("g++ src/Main.cpp -o build/Game -Iinclude -Llibs -lSDL2")
+    libs = ""
+    for lib in listdir("libs"):
+        if lib.endswith(".a"):
+            libs += f"-l{lib[3:-2]} "
+    system(f"g++ src/Main.cpp -o build/Game -Iinclude -Llibs -lSDL2 {libs}")
 
 
 def runProject():
